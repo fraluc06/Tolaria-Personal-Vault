@@ -2,72 +2,70 @@
 type: Note
 _organized: true
 ---
-
-# SVT-AV1 Essential (nekotrix) — Operational Note
+# SVT-AV1 Essential \(nekotrix\) — Operational Note
 
 > A fork of SVT-AV1 by @nekotrix with "sensible defaults" oriented toward perceptual quality and Quality-of-Life improvements.
-> Reference version: **v4.0.1-Essential** (based on mainline SVT-AV1 v4.0.1).
-> Binary: `SvtAv1EncApp` (standalone — supports MP4/MKV input via bundled FFMS2, and IVF / WebM / MKV output).
-> Source for real-world profiles in §4 and §5: nyaa.si release descriptions from `[Trix]` (nekotrix) and `[Ironclad]`_encoder, both verified to be using SVT-AV1-Essential v4.0.1.
+> Reference version: **v4.0.1-Essential** \(based on mainline SVT-AV1 v4.0.1\).
+> Binary: `SvtAv1EncApp` \(standalone — supports MP4/MKV input via bundled FFMS2, and IVF / WebM / MKV output\).
+> Source for real-world profiles in §4 and §5: nyaa.si release descriptions from `[Trix]` \(nekotrix\) and `[Ironclad]`\_encoder, both verified to be using SVT-AV1-Essential v4.0.1.
 
 ---
 
-## 1. Official Essential defaults (verified against `Parameters.md` v4.0.1)
+## 1. Official Essential defaults \(verified against `Parameters.md` v4.0.1\)
 
 Full table of Essential encoder defaults. Specifying any **already-default** value by hand is redundant.
 
 ### Base parameters
 
-| Parameter | Default | Range | Notes |
-| --- | --- | --- | --- |
 | `--preset` | **4** | -1 to 13 | overridden by `--speed` if preset not specified |
-| `--speed` | auto (slow ≤1080p, medium >1080p) | slower/slow/medium/fast/faster → preset 2/4/5/6/8 | resolution-dependent |
-| `--quality` | auto (medium → CRF 30 ≤1080p / 35 >1080p) | higher/high/medium/low/lower → 20/25/30/35/40/45 | overrides `--crf` unless crf is set |
-| `--crf` | **30** | 1-70 (0.25 step) | overrides `--quality` when specified |
+| --- | --- | --- | --- |
+| `--speed` | auto \(slow ≤1080p, medium \>1080p\) | slower/slow/medium/fast/faster → preset 2/4/5/6/8 | resolution-dependent |
+| `--quality` | auto \(medium → CRF 30 ≤1080p / 35 \>1080p\) | higher/high/medium/low/lower → 20/25/30/35/40/45 | overrides `--crf` unless crf is set |
+| `--crf` | **30** | 1-70 \(0.25 step\) | overrides `--quality` when specified |
 | `--qp` | 30 | 1-63 | only used with `--aq-mode 0` |
-| `--rc` | 0 (CRF/CQP) | 0/1/2 | 0=CRF, 1=VBR, 2=CBR |
-| `--aq-mode` | 2 (deltaq pred efficiency) | 0/1/2 | 0 disables AQ |
-| `--tune` | **1 (PSNR)** | 0-4 | 0=VQ, 1=PSNR, 2=SSIM, 3=IQ, 4=MS_SSIM |
+| `--rc` | 0 \(CRF/CQP\) | 0/1/2 | 0=CRF, 1=VBR, 2=CBR |
+| `--aq-mode` | 2 \(deltaq pred efficiency\) | 0/1/2 | 0 disables AQ |
+| `--tune` | **1 \(PSNR\)** | 0-4 | 0=VQ, 1=PSNR, 2=SSIM, 3=IQ, 4=MS\_SSIM |
 | `--fast-decode` | 0 | 0/2 | OFF by default |
-| `--color-format` | 1 (yuv420) | 0-3 | only supported value |
+| `--color-format` | 1 \(yuv420\) | 0-3 | only supported value |
 | `--input-depth` | 8 | 8/10 | Essential forces 10-bit internally via HBD |
-| `--profile` | 0 (main) | 0-2 | — |
-| `--level` | 0 (auto) | 0, 2.0-7.3 | — |
+| `--profile` | 0 \(main\) | 0-2 | — |
+| `--level` | 0 \(auto\) | 0, 2.0-7.3 | — |
 
 ### GOP / structure
 
 | Parameter | Default | Range | Notes |
 | --- | --- | --- | --- |
-| `--keyint` | **-2** (~5s auto) | -2 to 2^31-1 | Essential places a keyframe every ~5s by default |
-| `--min-keyint` | **-1** (multiple of mini-gop) | -1 to 2^31-1 | prevents keyframe spam |
-| `--irefresh-type` | **2** (KEY Frame / Closed GOP) | 1/2 | 1=FWD Frame (Open GOP), 2=Key (Closed) |
-| `--scd` | **1** (ON) | 0/1 | scene-change detection → intelligent keyframes |
-| `--lookahead` | -1 (auto) | -1/0-32 | — |
-| `--hierarchical-levels` | <=M12: 5, else 4 | 2-5 | 2=3 layers, 5=6 layers |
-| `--pred-struct` | 2 (Random Access) | 1/2 | 1=low delay, 2=random access |
-| `--enable-dg` | **0** (OFF) | 0/1 | dynamic GOP — only enable when needed |
-| `--startup-mg-size` | 0 (OFF) | 0/2/3/4 | — |
+| `--keyint` | **-2** \(~5s auto\) | -2 to 2^31-1 | Essential places a keyframe every ~5s by default |
+| `--min-keyint` | **-1** \(multiple of mini-gop\) | -1 to 2^31-1 | prevents keyframe spam |
+| `--irefresh-type` | **2** \(KEY Frame / Closed GOP\) | 1/2 | 1=FWD Frame \(Open GOP\), 2=Key \(Closed\) |
+| `--scd` | **1** \(ON\) | 0/1 | scene-change detection → intelligent keyframes |
+| `--lookahead` | -1 \(auto\) | -1/0-32 | — |
+| `--hierarchical-levels` | \<=M12: 5, else 4 | 2-5 | 2=3 layers, 5=6 layers |
+| `--pred-struct` | 2 \(Random Access\) | 1/2 | 1=low delay, 2=random access |
+| `--enable-dg` | **0** \(OFF\) | 0/1 | dynamic GOP — only enable when needed |
+| `--startup-mg-size` | 0 \(OFF\) | 0/2/3/4 | — |
 
 ### Filters / psychovisual
 
 | Parameter | Default | Range | Notes |
 | --- | --- | --- | --- |
-| `--enable-dlf` | **2** | 0-3 | deblocking loop filter (3 = max accuracy, slower) |
-| `--enable-cdef` | **1** (ON) | 0/1 | CDEF — already on |
-| `--enable-restoration` | **1** (ON) | 0/1 | Loop restoration — already on |
-| `--enable-tf` | **1** (ON) | 0-2 | ALT-REF temporally filtered frames |
+| `--enable-dlf` | **2** | 0-3 | deblocking loop filter \(3 = max accuracy, slower\) |
+| `--enable-cdef` | **1** \(ON\) | 0/1 | CDEF — already on |
+| `--enable-restoration` | **1** \(ON\) | 0/1 | Loop restoration — already on |
+| `--enable-tf` | **1** \(ON\) | 0-2 | ALT-REF temporally filtered frames |
 | `--tf-strength` | **1** | 0-4 | temporal filter strength |
-| `--enable-mfmv` | -1 (auto) | -1/0/1 | motion field mv |
-| `--scm` | 2 (content adaptive) | 0-3 | screen content detection |
+| `--enable-mfmv` | -1 \(auto\) | -1/0/1 | motion field mv |
+| `--scm` | 2 \(content adaptive\) | 0-3 | screen content detection |
 | `--sharpness` | **1** | -7 to 7 | sharpness bias |
-| `--sharp-tx` | **0** | 0/1 | OFF by default (no-op to specify) |
+| `--sharp-tx` | **0** | 0/1 | OFF by default \(no-op to specify\) |
 | `--max-tx-size` | 64 | 32/64 | — |
 | `--tx-bias` | **0** | 0-3 | 0=off, 1=full, 2=tx size, 3=interp filter |
 | `--complex-hvs` | **0** | 0/1 | high-complexity HVS model — enable for strong PSY |
 | `--noise-norm-strength` | **0** | 0-4 | AC boost for fine detail retention |
 | `--noise-adaptive-filtering` | **2** | 0-4 | 0=off, 1=on CDEF+restoration, 2=tune behavior, 3=CDEF only, 4=restoration only |
 | `--enable-alt-cdef` | **0** | 0-3 | alternative CDEF trade-offs |
-| `--luminance-qp-bias` | **10** | 0-100 | QP based on average luma (dark scenes) |
+| `--luminance-qp-bias` | **10** | 0-100 | QP based on average luma \(dark scenes\) |
 | `--ac-bias` | **0.25** | 0.0-8.0 | bias toward high-frequency error |
 | `--adaptive-film-grain` | 0 | 0/1 | film-grain synthesis block-size adaptive |
 | `--film-grain` | 0 | 0-50 | 0=off, 1-50 = grain denoising level |
@@ -79,17 +77,17 @@ Full table of Essential encoder defaults. Specifying any **already-default** val
 
 | Parameter | Default | Range | Notes |
 | --- | --- | --- | --- |
-| `--enable-qm` | **1** (ON) | 0/1 | quant matrices already enabled |
-| `--qm-min` | **2** | 0-15 | min luma flatness (0=most aggressive, 15=flat) |
+| `--enable-qm` | **1** \(ON\) | 0/1 | quant matrices already enabled |
+| `--qm-min` | **2** | 0-15 | min luma flatness \(0=most aggressive, 15=flat\) |
 | `--qm-max` | **15** | 0-15 | max luma flatness |
 | `--chroma-qm-min` | **4** | 0-15 | min chroma flatness |
 | `--chroma-qm-max` | **15** | 0-15 | max chroma flatness |
-| `--enable-variance-boost` | **1** (ON) | 0/1 | already on |
+| `--enable-variance-boost` | **1** \(ON\) | 0/1 | already on |
 | `--variance-boost-strength` | **1** | 1-4 | 1=mild, 2=gentle, 3=medium, 4=aggressive |
-| `--variance-octile` | **4** (median) | 1-8 | 8x8 block selectivity |
-| `--variance-boost-curve` | 0 (3 on PQ HDR) | 0-3 | 0=default, 3=HDR PQ |
-| `--qp-scale-compress-strength` | **1** | 0-8 | temporal GOP consistency (max recommended: 3) |
-| `--auto-tiling` | **1** (ON) | 0/1 | automatic tiles per resolution |
+| `--variance-octile` | **4** \(median\) | 1-8 | 8x8 block selectivity |
+| `--variance-boost-curve` | 0 \(3 on PQ HDR\) | 0-3 | 0=default, 3=HDR PQ |
+| `--qp-scale-compress-strength` | **1** | 0-8 | temporal GOP consistency \(max recommended: 3\) |
+| `--auto-tiling` | **1** \(ON\) | 0/1 | automatic tiles per resolution |
 | `--tile-rows` | 0 | 0-6 | log2 — overrides auto-tiling |
 | `--tile-columns` | 0 | 0-4 | log2 — overrides auto-tiling |
 
@@ -97,273 +95,335 @@ Full table of Essential encoder defaults. Specifying any **already-default** val
 
 | Parameter | Default | Range | Notes |
 | --- | --- | --- | --- |
-| `-i` | — | any string | input path (MKV/MP4/Y4M/YUV via bundled FFMS2) |
+| `-i` | — | any string | input path \(MKV/MP4/Y4M/YUV via bundled FFMS2\) |
 | `-b` | — | any string | output path: `.mkv`, `.webm`, `.ivf` |
 | `--hide-banner` | 0 | 0/1 | hide banner |
 | `--progress` | 1 | 0-2 | 2=verbose |
-| `--lp` | 0 (auto) | 0/6 | parallelism level |
-| `--pin` | 0 (no pin) | 0-N cores | pin instance to N threads |
+| `--lp` | 0 \(auto\) | 0/6 | parallelism level |
+| `--pin` | 0 \(no pin\) | 0-N cores | pin instance to N threads |
 | `--asm` | max | 0-11, c-max | limit instruction set |
 | `--low-memory` | 0 | 0/1 | cut RAM usage |
 | `--zones` | Null | any string | `start,end,crf;...` for CRF per range |
 | `--roi-map-file` | Null | any string | QP map for 64x64 blocks |
 
-### Default changes vs mainline (summary)
+### Default changes vs mainline \(summary\)
 
 These are the defaults Essential **changes** compared to mainline SVT-AV1:
 
 - Forced 10-bit internal precision via HBD
-- `--enable-dlf 2` (mainline 1)
-- `--enable-variance-boost 1`, `--variance-boost-strength 1`, `--variance-octile 4` (mainline all 0)
-- `--tf-strength 1` (mainline 0)
-- `--luminance-qp-bias 10` (mainline 0)
-- `--sharpness 1` (mainline 0)
-- `--qp-scale-compress-strength 1` (mainline 0)
-- `--enable-qm 1`, `--qm-min 2`, `--chroma-qm-min 4` (mainline: qm off / qm-min 0 / chroma-qm-min 8)
-- `--scd 1` (mainline off)
-- `--keyint -2`, `--min-keyint -1` (mainline: often 0 / 0)
-- `--auto-tiling 1` (mainline 0)
-- `--ac-bias 0.25` (mainline 0)
-- `--speed slow` at ≤1080p (mainline: fixed preset)
-- Temporal filtering disabled on keyframes (no blur on scene cuts)
-- Chroma fix (restoration mismatch from mainline v3)
-- HDR10+ / Dolby Vision / varboost PQ curve (borrowed from SVT-AV1-HDR)
+- `--enable-dlf 2` \(mainline 1\)
+- `--enable-variance-boost 1`, `--variance-boost-strength 1`, `--variance-octile 4` \(mainline all 0\)
+- `--tf-strength 1` \(mainline 0\)
+- `--luminance-qp-bias 10` \(mainline 0\)
+- `--sharpness 1` \(mainline 0\)
+- `--qp-scale-compress-strength 1` \(mainline 0\)
+- `--enable-qm 1`, `--qm-min 2`, `--chroma-qm-min 4` \(mainline: qm off / qm-min 0 / chroma-qm-min 8\)
+- `--scd 1` \(mainline off\)
+- `--keyint -2`, `--min-keyint -1` \(mainline: often 0 / 0\)
+- `--auto-tiling 1` \(mainline 0\)
+- `--ac-bias 0.25` \(mainline 0\)
+- `--speed slow` at ≤1080p \(mainline: fixed preset\)
+- Temporal filtering disabled on keyframes \(no blur on scene cuts\)
+- Chroma fix \(restoration mismatch from mainline v3\)
+- HDR10+ / Dolby Vision / varboost PQ curve \(borrowed from SVT-AV1-HDR\)
 
 > Practical takeaway: Essential is **already slower but more faithful than mainline out of the box**. Stacking PSY parameters is often redundant.
 
 ---
 
-## 2. PSY/HDR-borrowed parameters (NOT on by default)
+## 2. PSY/HDR-borrowed parameters \(NOT on by default\)
 
 These **actually change** behavior compared to the Essential default:
 
-- `--tx-bias 0–3` — transform-size bias. 2 = max sharpness on fine textures (grain, film). Essential default: 0.
+- `--tx-bias 0–3` — transform-size bias. 2 = max sharpness on fine textures \(grain, film\). Essential default: 0.
 - `--complex-hvs 0–1` — highest-complexity HVS psychovisual model. 1 = on. Default: 0.
-- `--noise-adaptive-filtering 0–4` — 1 disables CDEF + Loop Restoration in high-noise areas (preserves grain). 2 is the Essential/mainline default (filters behave per tune). 0 disables completely.
+- `--noise-adaptive-filtering 0–4` — 1 disables CDEF + Loop Restoration in high-noise areas \(preserves grain\). 2 is the Essential/mainline default \(filters behave per tune\). 0 disables completely.
 - `--noise-norm-strength 0–4` — normalizes AC coefficients so fine detail isn't flattened. Default: 0.
-- `--tune 0/1/2/3/4` — 0=VQ (Visual Quality), 1=PSNR (default), 2=SSIM, 3=IQ, 4=MS_SSIM. Essential default stays **1 (PSNR)** — must be set explicitly.
-- `--enable-alt-cdef 0–3` — alternative CDEF trade-offs (2/3 = max CDEF quality, slower).
-- `--enable-alt-dlf 0–3` — alternative DLF trade-offs (pair with `--enable-dlf 3` to force max level).
-- `--enable-tf 0–2` — 2 = adaptive; Essential also exposes `--enable-tf 3` for a more powerful temporal filter on all frames (acts as built-in denoiser). Adjust with `--tf-strength`.
-- `--scd 0/1` — scene-change detection for intelligent keyframes (Essential-specific, tuned high).
-- `--keyint -2 / -1 / 0 / N` — -2 = auto (~5s), -1/0 = only on scene change, N = multiple of 32+1 (max 300 for HW compatibility).
+- `--tune 0/1/2/3/4` — 0=VQ \(Visual Quality\), 1=PSNR \(default\), 2=SSIM, 3=IQ, 4=MS\_SSIM. Essential default stays **1 \(PSNR\)** — must be set explicitly.
+- `--enable-alt-cdef 0–3` — alternative CDEF trade-offs \(2/3 = max CDEF quality, slower\).
+- `--enable-alt-dlf 0–3` — alternative DLF trade-offs \(pair with `--enable-dlf 3` to force max level\).
+- `--enable-tf 0–2` — 2 = adaptive; Essential also exposes `--enable-tf 3` for a more powerful temporal filter on all frames \(acts as built-in denoiser\). Adjust with `--tf-strength`.
+- `--scd 0/1` — scene-change detection for intelligent keyframes \(Essential-specific, tuned high\).
+- `--keyint -2 / -1 / 0 / N` — -2 = auto \(~5s\), -1/0 = only on scene change, N = multiple of 32+1 \(max 300 for HW compatibility\).
 - `--min-keyint` — minimum gap between keyframes to avoid spam.
-- `--zones A,B,CRF;C,D,CRF` — per-zone CRF (CRF/CQP mode only).
-- `--auto-tiling 0/1` — automatic tiles per resolution (improves decoding).
-- `--distortion-bias-preset 0–4` — Essential "band" preset auto-configuring high-fidelity params (1 mild, 2 medium, 3 strong, 4 mimics SVT-AV1-HDR grain retention).
+- `--zones A,B,CRF;C,D,CRF` — per-zone CRF \(CRF/CQP mode only\).
+- `--auto-tiling 0/1` — automatic tiles per resolution \(improves decoding\).
+- `--distortion-bias-preset 0–4` — Essential "band" preset auto-configuring high-fidelity params \(1 mild, 2 medium, 3 strong, 4 mimics SVT-AV1-HDR grain retention\).
 - `--pin N` — pin the encoder instance to the first N CPU threads.
-- `--low-memory` — cut RAM usage (most effective in CRF/RA mode).
+- `--low-memory` — cut RAM usage \(most effective in CRF/RA mode\).
 - `--speed slower/slow/medium/fast/faster` — textual speed presets, resolution-dependent.
 - `--quality higher/high/medium/low/lower` — quality presets.
-- `--webm` — WebM output instead of IVF (automatic metadata passthrough).
+- `--webm` — WebM output instead of IVF \(automatic metadata passthrough\).
 - `--full-help` — full help.
 - `--hide-banner` — hide banner.
 
 ---
 
-## 3. Everyday reference presets
+## 3. Simple workflow — learning AV1 encoding
 
-> All commands use direct MKV/MP4 input (bundled FFMS2). The `-b` output extension can be `.mkv`, `.webm`, or `.ivf` — in practice the encoder writes a valid file matching the extension you provide.
-> If you want to keep audio/subtitles from the source, mux afterward with `mkvmerge` or `ffmpeg` (see §6).
+You do **not** need VapourSynth, ffmpeg, ROI maps, or 20-flag command lines to get small files with very good quality. Essential's defaults are already tuned for perceptual quality. The encoder has one main knob (CRF) and a few optional ones you can add as you learn.
 
-### A. Daily driver — balanced, works for ~any video
-Preset 4, CRF 27, tune VQ, mild PSY. Reasonable encode time.
+The workflow below is a **learning ladder** — three levels, each adds one new idea. Start at Level 1, only move up when you're curious.
+
+### Level 1 — the only knob that matters: CRF
 
 ```bash
-SvtAv1EncApp -i input.mkv --preset 4 --crf 27 --tune 0 --complex-hvs 1 --noise-adaptive-filtering 1 -b output.mkv
+SvtAv1EncApp -i input.mkv --crf 30 -b output.mkv
 ```
 
-### B. Anime (simple, real-world) — matches what Trix actually runs
-This is what the maintainer himself runs on his weekly anime releases.
+That's the entire job. Everything else is Essential defaults (10-bit, QM, variance boost, luma bias, scene-change detection, sharpness, deblocking — all on). The **only** thing you control is `--crf`:
+
+| CRF | Result | When |
+|---|---|---|
+| `--crf 32-34` | small file, good quality | casual storage, phone, streaming re-encode |
+| `--crf 30` (default) | transparent on most content | **start here** |
+| `--crf 27-28` | archive-grade | source you care about |
+| `--crf 24-25` | near-lossless, large file | rare/irreplaceable source only |
+
+> How to pick: encode a 1-minute clip at `--crf 30`, look at it, look at output size. Too big? Raise to 32. Too soft? Lower to 28. Repeat. CRF is logarithmic-ish — each +3 CRF roughly halves the file size.
+
+### Level 2 — match the encoder to your content (2 flags)
+
+Once you're comfortable with CRF, add **two** flags that genuinely matter for content type:
 
 ```bash
-SvtAv1EncApp -i input.mkv --speed slow --crf 30 -b output.mkv
+# Anime / cel animation
+SvtAv1EncApp -i input.mkv --crf 28 --tune 2 --film-grain 6 --adaptive-film-grain 1 -b output.mkv
+
+# Film / live-action with grain
+SvtAv1EncApp -i input.mkv --crf 30 --tune 0 --film-grain 4 --adaptive-film-grain 1 -b output.mkv
+
+# Clean digital video (modern streaming, no grain)
+SvtAv1EncApp -i input.mkv --crf 30 -b output.mkv
 ```
 
-### C. Film / live-action with grain — high fidelity, grain preserved
-For sources with native grain (Blu-ray, DVD rips, 70s-90s film). Strong PSY + adaptive noise filtering.
+| Flag | What it does | Why it matters |
+|---|---|---|
+| `--tune 0` (VQ) / `2` (SSIM) | Optimizes encoder target. Default is `1` (PSNR — math accuracy). | For anime, SSIM preserves line geometry. For film, VQ (Visual Quality) is what your eye actually sees. |
+| `--film-grain N --adaptive-film-grain 1` | After compression, synthesize grain back into flat areas. | Clean Crunchyroll streams get crushed to wax — this restores texture. N=4 light, N=8 visible, N=12 heavy. |
+
+The `--film-grain` flag is the single biggest "this looks pro" upgrade for free. Use 4-8 for most content, 10-15 for very grainy film stock.
+
+### Level 2.5 — cheap PSY upgrades (always worth taking, no extra compute)
+
+These flags are **essentially free** (no measurable encode-time cost) but give a real perceptual-uplift over the Essential defaults. Add them once, forget about them:
 
 ```bash
-SvtAv1EncApp -i input.mkv --preset 4 --crf 26 --tune 0 \
-  --tx-bias 2 --complex-hvs 1 --noise-norm-strength 1 --noise-adaptive-filtering 1 \
-  --enable-dg 1 --qp-scale-compress-strength 3 \
-  --color-primaries 1 --transfer-characteristics 1 --matrix-coefficients 1 \
+# Film / live-action with grain — PSY-default workflow
+SvtAv1EncApp -i input.mkv --crf 30 --tune 0 \
+  --complex-hvs 1 --tx-bias 2 \
+  --noise-adaptive-filtering 1 --enable-tf 2 \
+  --film-grain 4 --adaptive-film-grain 1 \
+  -b output.mkv
+
+# Anime / cel animation — same flags + anime-specific tune + luma bias off
+SvtAv1EncApp -i input.mkv --crf 28 --tune 2 \
+  --complex-hvs 1 --tx-bias 2 \
+  --noise-adaptive-filtering 1 --enable-tf 2 \
+  --luminance-qp-bias 0 \
+  --film-grain 6 --adaptive-film-grain 1 \
   -b output.mkv
 ```
 
-### D. Archive / "no compromises" — slow, max fidelity
-For rare/irreplaceable material where time is no object.
+Why each belongs here (and what to **avoid** wasting compute on):
+
+| Add (free PSY) | Default | Why it's worth |
+|---|---|---|
+| `--tune 0 / 2` | 1 PSNR | Optimize for eyes instead of math. Single biggest perceptual free win. |
+| `--complex-hvs 1` | 0 | Activates the highest-complexity psychovisual model. Allocates bits where your eye actually looks. ≈ free compute. |
+| `--tx-bias 2` | 0 | Forces smaller transform blocks → keeps hard edges sharp instead of ringing/blur. Slight motion-search cost but tiny. |
+| `--noise-adaptive-filtering 1` | 2 | Disables CDEF + Loop Restoration in high-noise areas. Cheap, preserves grain rather than pialla it. |
+| `--enable-tf 2` | 1 | Adaptive temporal filter (instead of always-on). Avoids motion-blending on anime/film movement. Small RD change. |
+| `--film-grain N --adaptive-film-grain 1` | 0 | Grain synthesis after compression. Zero encode-time cost, monotone-against-wax look. |
+| `--luminance-qp-bias 0` (anime only) | 10 | Disable the film-tuned default that hurts anime flat darks. Free. **Remove for live-action!** |
+
+| Skip (not worth the compute) | Default | Why skip |
+|---|---|---|
+| `--sharp-tx 0` | 0 | Already default. No-op. |
+| `--ac-bias 0.25` | 0.25 | Already default. Useless unless deviating. |
+| `--qm-min 0 --chroma-qm-min 0` | 2 / 4 | Larger files for a gain only provable on heavy cel anime. Essential defaults are already tuned. |
+| `--enable-dlf 3` | 2 | 2x-3x slower at preset 4 for marginal gain. Only worth it if you drop to `--preset 3`. |
+| `--enable-alt-cdef 1` / `--enable-alt-dlf 2` | 0 / 0 | Only meaningful at preset ≤ 3. At default preset 4 they barely move the needle. |
+| `--fast-decode 2` | 0 | **Actively conflicts** with everything in the "add" table. For weak-hardware playback only. |
+| `--tile-columns 1` | 0 (auto) | Forces a decode-time trade for compatibility with specific players. Skip for personal encodes. |
+| `--preset 3` (silently slower) | 4 | Goes into Level 3 (next) — don't add it here, the encode becomes 2-3x longer for an 8-10% quality gain. |
+
+### Level 3 — when you have patience: drop to preset 3
+
+When Level 2.5 stops being enough and you don't mind 2-3x longer encodes, add a few slow flags:
 
 ```bash
-SvtAv1EncApp -i input.mkv --preset 1 --crf 28 -b output.mkv
+SvtAv1EncApp -i input.mkv --crf 24 --preset 3 --tune 2 \
+  --tx-bias 2 --complex-hvs 1 --enable-dg 1 --luminance-qp-bias 0 \
+  --enable-alt-cdef 1 --enable-alt-dlf 2 --enable-dlf 3 --enable-tf 2 \
+  --film-grain 6 --adaptive-film-grain 1 \
+  -b output.mkv
 ```
 
-### E. In a hurry — preset 6, CRF 30
-Essential defaults already beat mainline, so even preset 6 is watchable in honest time.
+| Adds | Cost | Why now |
+|---|---|---|
+| `--preset 3` | 2-3x encode time | Better motion search → sharper lines, fewer artifacts. The big slow knob. |
+| `--enable-alt-cdef 1` | small | Alternative CDEF trade-off now pays off (line-edge fidelity). |
+| `--enable-alt-dlf 2` + `--enable-dlf 3` | small-to-moderate | Most accurate deblocking. Now your preset can keep up with it. |
+| `--enable-dg 1` | small | Dynamic GOP for abrupt scene cuts (anime). |
+
+> Stop here. This is the "effort-to-quality" ceiling for personal encoding — ~90% of the pro encoders' (Ironclad) look. Anything more (§4 onwards) needs VapourSynth pre-filtering and ROI maps to produce real gains; running it "standalone" wastes compute.
+
+### The decision tree — print this
+
+```
+Is the source anime?              Is the source grainy film?
+        │                                  │
+        ▼                                  ▼
+   --tune 2                          --tune 0
+   --luminance-qp-bias 0              --film-grain 8-12
+   --film-grain 4-8
+        │                                  │
+        └──────────────┬───────────────────┘
+                       ▼
+              How much time do you have?
+                       │
+            ┌──────────┴───────────┐
+            ▼                      ▼
+        in a hurry              patience
+   (just use --crf 30,       (--preset 3, add
+    defaults do the rest)     --tx-bias 2 --complex-hvs 1
+                             --enable-dg 1)
+```
+
+### How to actually learn (10 minutes)
+
+1. **Pick a 1-minute clip** from your favorite source MKV.
+2. **Run Level 1 at three CRFs**: `--crf 28`, `--crf 30`, `--crf 32`. Compare filesizes side-by-side. Pick the largest one you're happy with.
+3. **Add `--tune` for your content** (anime=2, film=0). Compare against Level 1. Notice grain looks better.
+4. **Add `--film-grain 4`**. Look at flat walls / skies in the encode. If they look like wax, bump to 6 or 8.
+5. **Done.** Only escalate to Level 3 / §4 if you have a source you genuinely care about and time to wait.
+
+> Remember: a 20-flag command from a pro encoder's release page is tuned for *their* source, *their* pipeline, *their* player compatibility. Your source and constraints are different. Start with CRF + tune + film-grain and let Essential do the rest.
+
+### 3.5 — "I'd use VapourSynth for pre-filtering, but I don't know how"
+
+Pro encoders (Ironclad, Trix) run a VapourSynth pre-pass **before** SVT-AV1-Essential: typically `dfttest`/`bm3d` denoise → `f3kdb` deband → `hqdn3d` light denoise → FGS grain reinjection on top of a cleaned source. The encoder then sees a near-flat, low-noise input and packs it tight.
+
+You can get **most of the way there without VapourSynth**, because Essential ships those steps as encoder flags. This is the "VapourSynth-equivalent pre-filter chain, but built into the encoder" command — most defaults, only the PSY/denoise flags that change behaviour:
 
 ```bash
-SvtAv1EncApp -i input.mkv --preset 6 --crf 30 --tune 0 -b output.mkv
+# VapourSynth-style pre-filter (denoise + deband + grain synth) without VapourSynth
+SvtAv1EncApp -i input.mkv --crf 30 --tune 0 \
+  --enable-tf 3 --tf-strength 2 \
+  --film-grain 8 --film-grain-denoise 1 --adaptive-film-grain 1 \
+  --noise-norm-strength 1 --noise-adaptive-filtering 1 \
+  --complex-hvs 1 --tx-bias 2 \
+  -b output.mkv
 ```
 
-### F. With Auto-Boost (automatic temporal consistency)
-[Auto-Boost-Essential](https://github.com/nekotrix/auto-boost-algorithm/tree/main/Auto-Boost-Essential) adjusts CRF per-scene using SSIMULACRA2. Single line:
+What each line replaces from a real VS script:
 
-```bash
-python Auto-Boost-Essential.py "input.mkv"
-```
+| VS plugin / step | Essential flag | What it does here |
+|---|---|---|
+| `dfttest` / `bm3d` / `mc_degrain` \(spatio-temporal denoise\) | `--enable-tf 3 --tf-strength 2` | Stronger temporal filter on **all** frames \(Essential-specific `3` mode\). This is Essential's built-in denoiser. |
+| `f3kdb` / `neo_f3kdb` \(deband\) | `--enable-tf 3` + `--noise-adaptive-filtering 1` | TF flattening kills banding; NAF=1 keeps CDEF/restoration **off** in high-noise areas so original grain survives. |
+| `hqdn3d` \(light chroma denoise\) | `--film-grain-denoise 1` | Denoises flat areas **first**, then synthesises grain back on top. |
+| FGS reinjection \(grain synthesis post-encode\) | `--film-grain 8 --adaptive-film-grain 1` | Grain synthesis, block-size adaptive. Zero encode-time cost. |
+| Film-grain tables from VS muxer | `--film-grain 8` (above) | Same idea — synthesized, not carried. |
+| AC / fine-detail retention tuning | `--noise-norm-strength 1` | Normalises AC coefficients so denoising doesn't flatten edges. |
+| PSY model + sharp lines | `--complex-hvs 1 --tx-bias 2` | High-complexity HVS + small transform bias. Cheap, free quality on a denoised source. |
+| `--tune 0` | VQ instead of PSNR | Optimise for eyes on cleaned film/live-action. |
+
+Tuning knobs (the only two you'll likely touch):
+
+| Flag | Default | Adjust to... |
+|---|---|---|
+| `--tf-strength` | 2 (here) | `1` if source is already clean; `3-4` for very noisy film/DVD. |
+| `--film-grain` | 8 (here) | `4-6` modern digital, `10-15` heavy film stock / cel anime. `0` to disable grain synthesis entirely. |
+
+> Anime? Swap `--tune 0` → `--tune 2` and add `--luminance-qp-bias 0`. Everything else stays identical.
+> You **don't need** VapourSynth, vspipe, ffmpeg, or a script for this. The whole chain is one `SvtAv1EncApp` invocation. If you later want the last ~10% (ROI maps, per-scene CRF, true bm3d), *that* is when VapourSynth becomes worth learning — see §4 and §6.F.
 
 ---
 
-## 4. nekotrix's own profiles (the maintainer's philosophy)
+## 4. Ironclad — the command string from nyaa (and how to adapt it)
 
- nekotrix (the Essential maintainer, who releases on nyaa under the `[Trix]` tag) consistently uses **bare-bones commands** — trusting the defaults he himself calibrated. Verified from his own release descriptions on nyaa.si (2025 batch, all tagged SVT-AV1-Essential v4.0.1-Essential):
-
-| Trix release tier | Encoder command | Pre-filtering |
-| --- | --- | --- |
-| Weekly episode releases (most common) | `--speed slow --crf 30` | "Mild denoising" (VapourSynth) |
-| One batch v2 (quality bump) | `--speed slower --crf 30` | "Mild denoising & line cleaning" |
-| Archival batches (full season) | `--preset 1 --crf 28` | "Mild denoising & line cleaning" |
-| Archival, rarer | `--preset 1 --crf 27` | "Mild denoising & line cleaning" |
-
-That's it. No `--tune`, no `--complex-hvs`, no `--tx-bias`, no QM overrides, no noise params.
-
-### Key observation: filtering happens *before* the encoder
-
-For Trix, the encoder is **not** where the psychovisual heavy lifting lives. Trix applies VapourSynth pre-processing **upstream** of `SvtAv1EncApp`:
-
-- weekly releases → mild denoise
-- archival batches → mild denoise + line cleaning
-
-The encoder itself just sits on its sensible defaults and runs `--crf 30` (or `--crf 27-28` for archival). All perceptual tuning is delegated to:
-1. the Essential defaults (already PSY-aware), AND
-2. the VapourSynth script that prepares the source.
-
-### Why this works (and the lesson)
-
-- **Essential defaults are already the tune.** nekotrix baked the PSY/QM/consistency stack into the defaults specifically so users wouldn't need to specify them. When you write `--speed slow --crf 30`, you implicitly get `--tune 1` (PSNR), `--enable-qm 1`, `--qm-min 2`, `--chroma-qm-min 4`, `--enable-variance-boost 1`, `--luminance-qp-bias 10`, `--qp-scale-compress-strength 1`, `--scd 1`, `--keyint -2`, `--enable-dlf 2`, `--tf-strength 1`, `--sharpness 1`, `--ac-bias 0.25` and 10-bit internal precision.
-- **`--preset 1` is the slow end of practical.** Going below 4 dramatically increases time for diminishing returns. nekotrix uses it for archival material he cares about most.
-- **CRF 27-30 is the sweet spot.** CRF 30 ≈ transparent on most content with Essential defaults. CRF 27-28 for archival. Lower than 24 is almost always a waste of space.
-
-### Other anime encoders — note on compatibility
-
-- **Sokudo** — uses **svt-av1-psy** (the PSY fork, NOT Essential) together with **auto-boost-av1an** (scene-based CRF). Their releases explicitly say `encoder: svt-av1-psy`. They are **not** part of the Essential ecosystem; their settings don't map 1:1 to Essential.
-- **Ironclad** — confirmed Essential v4.0.1 user using the heavy stack documented in §5.
-
----
-
-## 5. Real-world anime profiles (Ironclad)
-
-Profiles observed directly in Ironclad release descriptions on nyaa.si. All Ironclad variants share the same PSY/fidelity stack and differ only in **CRF range and `--ac-bias`**. The CRF range notation (`15.0-30.0`, `10.0-30.0`) is per-episode/scene-based: low end for complex/grainy scenes, high end for flat/talky scenes (driven by an Auto-Boost-style script plus ROI Maps).
-
-### 5.1 The Ironclad common stack (shared by all variants)
+The string below is **copy-pasted verbatim** from an Ironclad anime release on nyaa.si, tagged `SVT-AV1-Essential v4.0.1-Essential`:
 
 ```
---preset 3 --tune 2
---noise-norm-strength 1 --qp-scale-compress-strength 3
---tx-bias 2 --complex-hvs 1 --noise-adaptive-filtering 1
---enable-alt-cdef 1 --enable-alt-dlf 2 --enable-dlf 3 --enable-tf 2
---enable-dg 1 --tile-columns 1 --fast-decode 2
---qm-min 0 --qm-max 15 --chroma-qm-min 0
---luminance-qp-bias 0 --sharp-tx 0
-+ ROI Maps
+--crf 10.0-30.0 --preset 3 --tune 2 --noise-norm-strength 1 --qp-scale-compress-strength 3
+--ac-bias 0.25 --sharp-tx 0 --tx-bias 2 --complex-hvs 1 --noise-adaptive-filtering 1
+--enable-alt-cdef 1 --enable-alt-dlf 2 --qm-min 0 --qm-max 15 --chroma-qm-min 0
+--luminance-qp-bias 0 --enable-dlf 3 --enable-tf 2 --enable-dg 1
+--tile-columns 1 --fast-decode 2 + ROI Maps
 ```
 
-Per-parameter rationale (anime-specific):
+This is the most aggressive anime profile observed in the wild. Ironclad uses a team pipeline (VapourSynth pre-filter, ROI maps generated face-detection-side, FGS reinjection) — running this string **as-is** without that pipeline produces larger files with no real benefit.
 
-| Parameter | Value | Why (anime context) |
-| --- | --- | --- |
-| `--preset 3` | slow | Anime encoders accept the 2-4x time penalty vs. preset 4 for the extra motion-search refinement — crucial for cel-shaded line integrity. One release used `--preset 2` (slower still). |
-| `--tune 2` | SSIM | Preserves structural/line geometry better than VQ — line art is exactly the case SSIM was designed for |
-| `--noise-norm-strength 1` | mild AC boost | Anti-flatten for the few fine textures anime has (background details, CG/compositing noise). Default Essential is 0 |
-| `--qp-scale-compress-strength 3` | max-consistency for general use | Anime has very stable frame-to-frame complexity unlike film — high consistency prevents flicker on held cels / looped frames |
-| `--tx-bias 2` | tx size bias | Forces smaller transform sizes → keeps hard line edges sharp instead of ringing/blur |
-| `--complex-hvs 1` | HVS on | Maximum-complexity HVS model. Pair with `--tune 2` |
-| `--noise-adaptive-filtering 1` | CDEF+rest. off in noise | Preserves any deliberate noise/grain (rare on anime, but some productions have it) |
-| `--enable-alt-cdef 1` | mild alt CDEF | Trade-off toward fidelity over deringing — anime line edges are forgiving of mild ringing but not of softening |
-| `--enable-alt-dlf 2` + `--enable-dlf 3` | alt DLF + max DLF accuracy | Pair: forces the most accurate loop filter level. Cost: significant compute at faster presets |
-| `--enable-tf 2` | adaptive temporal filter | Default Essential is 1 (always-on). Adaptive is safer for anime to avoid blending on motion |
-| `--enable-dg 1` | dynamic GOP on | Essential default is 0. Anime cuts can be radical — dynamic GOP adapts keyframe/mini-gop structure to scene changes |
-| `--tile-columns 1` | log2 = 2 columns | Essential auto-tiling is on by default; explicitly forcing 2 columns is a deliberate decode-time trade for compatibility |
-| `--fast-decode 2` | fast decode lvl 2 | **Conflicts with the PSY stack** (limits hierarchical structure) but kept for player compatibility. Net effect: still quality-positive because all the aggressive PSY params downstream compensate |
-| `--qm-min 0 --chroma-qm-min 0` | aggressive QM | More aggressive than Essential default (2/4). Forces non-flat quantization matrices → higher fidelity on hard edges, slightly larger files. `qm-max 15` stays default so flat regions still compress well |
-| `--luminance-qp-bias 0` | disable luma-QP bias | Essential default is 10 — designed for live-action dark scenes. Anime flat dark areas can be hurt by luma-based QP tuning, so it's deliberately disabled |
-| `--sharp-tx 0` | default | Redundant (already default). Likely exported by GUI/exporter for transparency |
-| `--ac-bias` 0.25 or 1.0 | high-freq error bias | Default is 0.25; bumping to 1.0 (Profile 2 below) heavily biases toward high-frequency preservation — better for productions with lots of edge detail, hatching, screen-tone (screentone patterns) |
-| `+ ROI Maps` | external per-frame QP maps | Encoder is supplied a region-of-interest map to push bits at foreground faces/subjects and starve the background — massive win on anime where ROI is well-defined |
+### 4.1 Per-parameter breakdown — what each flag really does
 
-### 5.2 The three Ironclad variants (verified on nyaa)
+| Flag | Value | Ironclad effect | Essential default | Verdict for adapting |
+|---|---|---|---|---|
+| `--crf` | 10-30 (range, per-scene) | Auto-Boost: low end for complex scenes, high end for flat | 30 (fixed) | **Adapt**: use a single `--crf 24` for anime, or `--crf 26` for a lighter file. The 10-30 range requires an Auto-Boost-style script — see §6.F |
+| `--preset` | 3 | "slow" — major time penalty vs. default 4 | 4 | **Adapt**: keep `--preset 3` if you have patience; drop to `--preset 4` for ~2x faster with negligible loss on anime |
+| `--tune` | 2 (SSIM) | Best for anime line-art | 1 (PSNR) | **Keep** — one of the few settings that truly matters for anime |
+| `--noise-norm-strength` | 1 | Mild AC boost for fine texture | 0 | **Keep 1** (cheap, helps screen-tone) |
+| `--qp-scale-compress-strength` | 3 | Max temporal consistency | 1 | **Keep 2-3** — prevents flicker on anime loops |
+| `--ac-bias` | 0.25 |same as default | 0.25 | **Drop** — already Essential default (Ironclad Profile 1 uses 1.0) |
+| `--sharp-tx` | 0 | no-op | 0 | **Drop** — pure noise in the command |
+| `--tx-bias` | 2 | Sharp line edges | 0 | **Keep** — critical for anime line integrity |
+| `--complex-hvs` | 1 | Maximum-complexity HVS model | 0 | **Keep** — true PSY gain |
+| `--noise-adaptive-filtering` | 1 | Disable CDEF/restoration in noise | 2 | **Keep 1** if source has grain; drop for clean digital anime |
+| `--enable-alt-cdef` | 1 | Alternative CDEF trade-off (fidelity over dering) | 0 | **Keep** — line-edge fidelity |
+| `--enable-alt-dlf` | 2 | Alternative deblocking trade-off | 0 | **Keep** — pairs with `--enable-dlf 3` below |
+| `--qm-min` | 0 | Aggressive luma QM | 2 | **Adapt**: use `0` for older cel anime (heavy line-work); keep `2` for modern digital anime |
+| `--qm-max` | 15 | same as default | 15 | **Drop** — already default |
+| `--chroma-qm-min` | 0 | Aggressive chroma QM | 4 | Same as above: `0` for cel, `4` for digital |
+| `--luminance-qp-bias` | 0 | Disable luma-QP bias (anime-specific) | 10 | **Keep 0** for anime. For live-action, **remove this flag** — leaving Essential default of 10 is correct for film dark scenes |
+| `--enable-dlf` | 3 | Maximum deblocking accuracy (slow) | 2 | **Adapt**: `3` at `--preset 3` is heavy. Use `3` if preset ≤ 3; otherwise stick with `2` |
+| `--enable-tf` | 2 | Adaptive temporal filter (anti-blend) | 1 | **Keep** — safer than always-on for anime motion |
+| `--enable-dg` | 1 | Dynamic GOP (anime cuts) | 0 | **Keep** — anime has abrupt scene changes |
+| `--tile-columns` | 1 | force 2 columns (decode-time compat) | 0 (auto) | **Optional**: only needed if you target specific weak hardware. Drop if you don't |
+| `--fast-decode` | 2 | Faster decode, limits structure | 0 | **Drop** unless you target aging hardware players. It conflicts with the PSY stack you're enabling |
+| `+ ROI Maps` | external | face-detection QP maps | — | **Drop for personal encodes** — requires an upstream pipeline. Without ROI maps, expect ~30% larger files at the same perceptual quality |
 
-| Variant | CRF range | `--ac-bias` | Use case |
-| --- | --- | --- | --- |
-| **Profile 1** — edgy/textured | 10.0–30.0 | 1.0 (boosted) | Lots of hatching / screentone / heavy line-work (older cel anime, Shaft, certain 80s-90s OVA). Most commonly observed. |
-| **Profile 2** — archive | 10.0–30.0 | 0.25 (Essential default) | Archival — same low CRF floor but default AC bias. Smaller files than Profile 1. |
-| **Profile 3** — lighter bitrate floor | 15.0–30.0 | 0.25 (Essential default) | General anime, less aggressive on the lower end. Reasonable size. |
+### 4.2 The simplified Ironclad — anime, personal use
 
-> Note: The Ironclad releases observed with `--preset 2` (one specific title) instead of 3 were even slower — same parameter stack otherwise.
-
-### 5.3 The full Ironclad pipeline (not just encoder flags)
-
-The encoder command alone is only **~30%** of the Ironclad pipeline. The other ~70% lives in VapourSynth pre-processing and FGS reinjection. Every Ironclad release on nyaa verifies the same pipeline:
-
-1. **Pre-filter (VapourSynth, `vs-denoise` family)** — heavy denoise chain:
-   - `dfttest` for general noise (luma + chroma), frequency-strength curve `{0.0: 0.3, 0.4: 0.3, 0.6: 0.6, 0.8: 1.5, 1.0: 2.0}`, `tr=2`
-   - `bm3d` (FAST profile, `sigma=4` to `96` depending on source), luma-only (`planes=0`)
-   - `nlm` (Non-Local Means) on chroma only, `h=0.6, tr=2, a=2`
-   - `mc_degrain` for temporal denoise (`prefilter=DFTTEST`, `MVToolsPreset.HQ_SAD`, `thsad=100`)
-2. **Dering / deband (VapourSynth)** — `vs-dehalo` `rx=2` to `rx=5` for ring removal; `vs-deband` `thr=[128,32,32]` or `thr=[192,32,32]` for banding
-3. **Optional rescale (VapourSynth, `vodesfunc` + `vs-scale`)** — double upscale with **ArtCNN.R8F64** then downscale with **Hermite(linear=True)** (used for ~720p releases from 1080p sources)
-4. **Encoder** — the §5.1 stack with per-variant CRF + ac-bias
-5. **Film grain synthesis (FGS)** — re-inject synthetic grain after denoising:
-   - `--film-grain 4-50 --adaptive-film-grain 1` (range = per-scene auto), OR
-   - `--photon-noise 7800-14700` (ISO range = per-scene auto)
-6. **ROI Maps** — external per-frame QP maps: face-detect / motion-masks to push bits at subjects
-7. **Mux** — encoding pipeline (AV1 + Opus audio `--bitrate 128` via opusenc) + subtitle tracks
-
-### 5.4 CLI form (Profile 1, sanitised)
-
-Stripped of pure-default no-ops (`--sharp-tx 0`), ordered logically:
+Strip the no-ops (`--sharp-tx 0`, `--qm-max 15`, `--ac-bias 0.25`) and the things you don't need without Ironclad's pipeline (`--fast-decode 2`, `+ ROI Maps`). Keep what actually changes behavior for anime. Pick one CRF value:
 
 ```bash
-SvtAv1EncApp -i input.mkv \
-  --preset 3 --crf 24 --tune 2 \
+# Anime — Ironclad spirit, personal encoding (no VapourSynth, no ROI maps)
+SvtAv1EncApp -i input.mkv --crf 24 --preset 3 --tune 2 \
   --noise-norm-strength 1 --noise-adaptive-filtering 1 \
   --qp-scale-compress-strength 3 \
   --tx-bias 2 --complex-hvs 1 \
   --enable-alt-cdef 1 --enable-alt-dlf 2 --enable-dlf 3 --enable-tf 2 \
-  --enable-dg 1 --tile-columns 1 --fast-decode 2 \
+  --enable-dg 1 \
   --qm-min 0 --chroma-qm-min 0 --luminance-qp-bias 0 \
+  --film-grain 6 --adaptive-film-grain 1 \
   --color-primaries 1 --transfer-characteristics 1 --matrix-coefficients 1 \
-  --ac-bias 1.0 \
-  --film-grain 8 --adaptive-film-grain 1 \
   -b output.mkv
-# Add --roi-map-file roi.txt if you have a ROI map
-# In real Ironclad encodes, the CRF is per-scene (auto-boost), not a single value
 ```
 
-<details>
-<summary>Profile 2 (archive) and Profile 3 (lighter floor) — diff from Profile 1</summary>
+Notes:
+- `--film-grain 6 --adaptive-film-grain 1` replaces what Ironclad gets from its separate FGS reinjection step in VapourSynth. Raise to 8-12 for cel anime with visible grain; keep at 4 for clean digital anime.
+- `--color-primaries/transfer/matrix 1` = BT.709 metadata, prevents color washout on TVs/players (Ironclad gets this from their VapourSynth muxer; pure encoder needs it explicit).
+- No `--tile-columns` / `--fast-decode` — drop both unless you specifically target weak hardware.
+- For modern digital anime only (Crunchyroll etc.), you can also drop `--qm-min 0 --chroma-qm-min 0` — keep Essential defaults (2 / 4) for smaller files. The aggressive QM is for cel anime / heavy line-work.
+
+### 4.3 Sanity tier — "I want Ironclad quality, not the complexity"
+
+If you want the Ironclad look without 15 flags, the only settings that really matter are:
 
 ```bash
-# Profile 2 (archive): identical stack, lower ac-bias
---ac-bias 0.25 --crf 10-30 (scene-based)
-
-# Profile 3 (lighter bitrate floor): lower CRF floor raised to 15
---ac-bias 0.25 --crf 15-30 (scene-based)
+SvtAv1EncApp -i input.mkv --crf 24 --tune 2 \
+  --tx-bias 2 --complex-hvs 1 \
+  --enable-dg 1 --luminance-qp-bias 0 \
+  --film-grain 6 --adaptive-film-grain 1 \
+  -b output.mkv
 ```
-</details>
 
-### 5.5 Critical caveats
-
-- **`--fast-decode 2` conflicts with everything else here.** Anime encoders accept this trade because player compatibility (especially aging hardware players / set-top boxes) trumps the marginal PSY loss. If you don't need it, **drop it** — the PSY stack becomes more effective and the encode times improve (paradoxically, fewer constraints).
-- **`--luminance-qp-bias 0` is a deliberate anime choice**, not a mistake. Essential's default of 10 is tuned for live-action dark scenes; on anime flat darks, luma-biased QP can misallocate bits. Keep at 0 for anime. For live-action/film, leave the Essential default (10).
-- **`--qm-min 0` / `--chroma-qm-min 0` is more aggressive than Essential's default** (2/4). Intentional for anime line-art, larger files. For live-action reconsider, since the Essential defaults were tuned for that scenario.
-- **`+ ROI Maps` is doing a lot of heavy lifting.** Without an ROI map, the profile is ~70% as effective — encoders using this stack almost always generate ROI maps upstream (face detection, motion masks, VaPhase-style scripts).
-- **CRF 10 is overkill** for distribution. The lower bound exists so the per-scene CRF algorithm (Auto-Boost-like, or manual `--zones`) can freely allocate bits on complex frames without clipping the floor. For a single-CRF encode, CRF 22-26 is the practical anime range.
-- **Ironclad ≠ Trix philosophy.** Trix delegates psychovisual work to VapourSynth pre-filter + Essential defaults; Ironclad pushes it into the encoder + ROI + FGS. Don't mix the two casually.
+Six flags. The other 14 in the original Ironclad string are either already Essential defaults or only justified by their upstream pipeline. This gets you ~85% of the Ironclad look, single command, no external dependencies.
 
 ---
 
-## 6. Common mistakes / things to avoid
+## 5. Common mistakes / things to avoid
 
 | Parameter | Why not to set it by hand |
 | --- | --- |
@@ -374,44 +434,15 @@ SvtAv1EncApp -i input.mkv \
 | `--preset 4` if you don't change it | Already the `slow` default at ≤1080p (~preset 4). Fine to write for clarity. |
 | `--luminance-qp-bias 0` | Essential default is **10**. Setting to 0 *worsens* live-action dark scenes but is **intentional for anime**. Choose by content type. |
 | `--fast-decode 2` with `--tune 0/2` + `--complex-hvs 1` | Limits structure and PSY effectiveness. Keep only for hardware-decode compatibility needs. |
-| Using the full Ironclad stack without a VapourSynth pre-pass | The stack is calibrated against a denoised/cleaned source. Running it on raw Crunchyroll/BD without the upstream `dfttest`+`bm3d`+`mc_degrain` chain will produce larger files with no quality benefit. |
+| Using the full Ironclad stack without a VapourSynth pre-pass | The stack is calibrated against a denoised/cleaned source. Running it on raw Crunchyroll/BD without the upstream dfttest+bm3d+mc_degrain chain will produce larger files with no quality benefit. |
 
 ---
 
-## 7. Muxing into MKV (true container with audio/subs)
-
-`SvtAv1EncApp` writes the video stream only (any extension you give it works, but the bitstream is the same). To get a `.mkv` with audio + subtitles from the source:
-
-```bash
-# 1. Encode only the video to .mkv (or .webm / .ivf)
-SvtAv1EncApp -i input.mkv --preset 4 --crf 27 --tune 0 --complex-hvs 1 -b video.mkv
-
-# 2. Mux into MKV keeping audio + subtitles from the source
-mkvmerge -o output.mkv video.mkv --no-video input.mkv
-```
-
-Or with FFmpeg:
-
-```bash
-ffmpeg -i input.mkv -i video.mkv -map 1:v:0 -map 0:a -map 0:s? -c copy output.mkv
-```
-
-For audio encoding (Trix/Sokudo style — Opus 96-128 kbps stereo):
-
-```bash
-# Extract audio first, then encode with opusenc
-opusenc --bitrate 128 input_audio.flac audio.opus
-# Mux together
-mkvmerge -o output.mkv video.mkv audio.opus --no-video --no-audio input.mkv
-```
-
----
-
-## 8. Quality verification (metrics)
+## 6. Quality verification (metrics)
 
 To compare encode vs. source locally:
 
-- **SSIMULACRA2** (recommended by nekotrix): [cloudinary/ssimulacra2](https://github.com/cloudinary/ssimulacra2)
+- **SSIMULACRA2** \(recommended by nekotrix\): [cloudinary/ssimulacra2](https://github.com/cloudinary/ssimulacra2)
 - **Butteraugli**: [google/butteraugli](https://github.com/google/butteraugli)
 - Universal CPU implementation: [vapoursynth-zip](https://github.com/dnjulek/vapoursynth-zip)
 - GPU implementation: [Vship](https://codeberg.org/Line-fr/Vship)
@@ -420,14 +451,14 @@ Avoid PSNR/SSIM/vanilla VMAF as a single metric for perceptual quality.
 
 ---
 
-## 9. References
+## 7. References
 
-- Repo: https://github.com/nekotrix/SVT-AV1-Essential
-- Official builds (Windows/Linux/macOS): https://github.com/nekotrix/SVT-AV1-Essential/releases
-- Homebrew tap (Linux/macOS, ffmpeg included): https://github.com/fraluc06/homebrew-ffmpeg-svt-av1-essential
-- Auto-Boost-Essential: https://github.com/nekotrix/auto-boost-algorithm/tree/main/Auto-Boost-Essential
-- HandBrake build with Essential: https://github.com/nekotrix/HandBrake-SVT-AV1-Essential
-- SCD tuning test: https://gist.github.com/nekotrix/a025a48448ce05c3af9bd162dda70f66
-- Auto-tiling test: https://wiki.x266.mov/blog/svt-av1-fourth-deep-dive-p2#tiles
-- Legal video sources for testing: https://media.xiph.org/video/derf/
+- Repo: [https://github.com/nekotrix/SVT-AV1-Essential](https://github.com/nekotrix/SVT-AV1-Essential)
+- Official builds \(Windows/Linux/macOS\): [https://github.com/nekotrix/SVT-AV1-Essential/releases](https://github.com/nekotrix/SVT-AV1-Essential/releases)
+- Homebrew tap \(Linux/macOS, ffmpeg included\): [https://github.com/fraluc06/homebrew-ffmpeg-svt-av1-essential](https://github.com/fraluc06/homebrew-ffmpeg-svt-av1-essential)
+- Auto-Boost-Essential: [https://github.com/nekotrix/auto-boost-algorithm/tree/main/Auto-Boost-Essential](https://github.com/nekotrix/auto-boost-algorithm/tree/main/Auto-Boost-Essential)
+- HandBrake build with Essential: [https://github.com/nekotrix/HandBrake-SVT-AV1-Essential](https://github.com/nekotrix/HandBrake-SVT-AV1-Essential)
+- SCD tuning test: [https://gist.github.com/nekotrix/a025a48448ce05c3af9bd162dda70f66](https://gist.github.com/nekotrix/a025a48448ce05c3af9bd162dda70f66)
+- Auto-tiling test: [https://wiki.x266.mov/blog/svt-av1-fourth-deep-dive-p2\#tiles](https://wiki.x266.mov/blog/svt-av1-fourth-deep-dive-p2#tiles)
+- Legal video sources for testing: [https://media.xiph.org/video/derf/](https://media.xiph.org/video/derf/)
 - Real-world profiles source: nyaa.si release descriptions from `[Trix]` and `[Ironclad]` uploaders, all tagged `SVT-AV1-Essential v4.0.1-Essential`

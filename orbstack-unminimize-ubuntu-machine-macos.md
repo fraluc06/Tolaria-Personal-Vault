@@ -1,6 +1,7 @@
 ---
 type: Note
 url: https://orbstack.dev
+_organized: true
 ---
 # OrbStack unminimize Ubuntu machine (macOS)
 

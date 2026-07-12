@@ -1,5 +1,6 @@
 ---
 type: Note
+_organized: true
 ---
 
 # My Favorite shadcn Component Libraries
