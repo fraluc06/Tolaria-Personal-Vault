@@ -1,7 +1,8 @@
 ---
-type: Note
+type: Runbook
 url: https://orbstack.dev
 _organized: true
+trigger: "Macchina Ubuntu di OrbStack senza man page e documentazione (immagine minimized)"
 ---
 # OrbStack unminimize Ubuntu machine (macOS)
 

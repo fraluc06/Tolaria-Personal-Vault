@@ -1,0 +1,9 @@
+name: Runbooks
+icon: book
+color: "#f59e0b"
+sort: "title:asc"
+filters:
+  any:
+    - field: type
+      op: equals
+      value: Runbook

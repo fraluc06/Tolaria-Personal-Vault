@@ -1,7 +1,8 @@
 ---
-type: Note
+type: Runbook
 _organized: true
 url: https://docs.brew.sh/Formula-Cookbook
+trigger: "Before opening a PR to homebrew-core or homebrew-cask"
 ---
 # Testing Homebrew formula/cask changes locally (CI replica)
 
